@@ -1,13 +1,12 @@
 const apiKey = 'af1a16eb878a4e1e1b04e04dee962c30';
-const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
 const containerEl = document.getElementById('container');
 const btnContainerEl = document.getElementById('btn-container');
 const storedCities = JSON.parse(localStorage.getItem('cities')) || [];
 
 // main function to retrieve our data from the weather api, render data to page, and store in localStorage
-function getData() {
-  let city = searchInput.value.trim()
+function getSearchData(cityResult) {
+  let city = cityResult
   const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
 
   fetch(apiUrl)
@@ -83,8 +82,8 @@ function handleSearchHistory(event) {
     return;
   }
   
-  city = event.target.textContent
-  getData(city)
+  cityInput = event.target.textContent
+  getSearchData(cityInput)
 
 }
 
@@ -94,5 +93,12 @@ function createForecastCards() {
 
 // functions and event listeners to initialize on page load
 createHistoryBtn();
-searchBtn.addEventListener('click', getData)
-btnContainerEl.addEventListener('click', handleSearchHistory)
+
+searchBtn.addEventListener('click', () => {
+  let searchInput = document.getElementById('search-input').value;
+  if (searchInput) {
+    getSearchData(searchInput)
+  }
+});
+
+btnContainerEl.addEventListener('click', handleSearchHistory);
