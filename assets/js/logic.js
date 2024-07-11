@@ -4,6 +4,7 @@ const searchBtn = document.getElementById('search-btn');
 const containerEl = document.getElementById('container');
 const storedCities = JSON.parse(localStorage.getItem('cities')) || [];
 
+// main function to retrieve our data from the weather api, render data to page, and store in localStorage
 function getData() {
   let city = searchInput.value.trim()
   const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
@@ -37,9 +38,9 @@ function renderCurrentWeather(city, weather) {
   // create elements to render values to
   const cityEl = document.createElement('h1')
   const dateEl = document.createElement('h1')
-  const tempEl = document.createElement('h1')
-  const humidEl = document.createElement('h1')
-  const windEl = document.createElement('h1')
+  const tempEl = document.createElement('p')
+  const humidEl = document.createElement('p')
+  const windEl = document.createElement('p')
   const iconEl = document.createElement('img')
 
   // insert values to elements
@@ -52,13 +53,32 @@ function renderCurrentWeather(city, weather) {
   
   // append elements to the page
   containerEl.append(cityEl, dateEl, iconEl, tempEl, humidEl, windEl);
+  
+  //create 
+  createHistoryBtn();
 
 }
 
+// function to store the city search results to the array and then localStorage
 function storeSearchHistory(city) {
   storedCities.push(city);
   localStorage.setItem('cities', JSON.stringify(storedCities));
 
 }
 
+function createHistoryBtn() {
+  const thisCity = JSON.parse(localStorage.getItem('cities'))
+
+  for (let i = 0; i < thisCity.length; i++) {
+
+    const newBtn = document.createElement('button');
+    newBtn.classList.add('history-btn');
+    newBtn.textContent = thisCity[i];
+    containerEl.append(newBtn);
+  }
+    
+}
+
+// functions and event listeners to initialize on page load
+createHistoryBtn();
 searchBtn.addEventListener('click', getData)
