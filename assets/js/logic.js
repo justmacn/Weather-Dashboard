@@ -2,6 +2,7 @@ const apiKey = 'af1a16eb878a4e1e1b04e04dee962c30';
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
 const containerEl = document.getElementById('container');
+const btnContainerEl = document.getElementById('btn-container');
 const storedCities = JSON.parse(localStorage.getItem('cities')) || [];
 
 // main function to retrieve our data from the weather api, render data to page, and store in localStorage
@@ -15,9 +16,10 @@ function getData() {
     
   })
   .then(function (data) {
+    console.log(data);
     renderCurrentWeather(city, data);
     storeSearchHistory(city);
-    console.log(data);
+    
     
   })
   .catch(function (error) {
@@ -36,8 +38,8 @@ function renderCurrentWeather(city, weather) {
   const date = dayjs().format('D/MM/YYYY')
 
   // create elements to render values to
-  const cityEl = document.createElement('h1')
-  const dateEl = document.createElement('h1')
+  const cityEl = document.createElement('h2')
+  const dateEl = document.createElement('h2')
   const tempEl = document.createElement('p')
   const humidEl = document.createElement('p')
   const windEl = document.createElement('p')
@@ -53,9 +55,6 @@ function renderCurrentWeather(city, weather) {
   
   // append elements to the page
   containerEl.append(cityEl, dateEl, iconEl, tempEl, humidEl, windEl);
-  
-  //create 
-  createHistoryBtn();
 
 }
 
@@ -74,11 +73,26 @@ function createHistoryBtn() {
     const newBtn = document.createElement('button');
     newBtn.classList.add('history-btn');
     newBtn.textContent = thisCity[i];
-    containerEl.append(newBtn);
+    btnContainerEl.append(newBtn);
   }
     
+}
+
+function handleSearchHistory(event) {
+  if (!event.target.matches('.history-btn')) {
+    return;
+  }
+  
+  city = event.target.textContent
+  getData(city)
+
+}
+
+function createForecastCards() {
+
 }
 
 // functions and event listeners to initialize on page load
 createHistoryBtn();
 searchBtn.addEventListener('click', getData)
+btnContainerEl.addEventListener('click', handleSearchHistory)

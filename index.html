@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    <h2><label for="search">Search for a city:</label></h2>
-    <input type="text" name="search" id="search-input" placeholder="New York">
-    <button type="sybmit" id="search-btn">Search</button>
-    <div id="container"></div>
+    <header>
+        <h1>Weather Dashboard</h1>
+    </header>
+
+    <main>
+        <h3><label for="search">Search for a city:</label></h3>
+        <input type="text" name="search" id="search-input" placeholder="New York">
+        <button type="sybmit" id="search-btn">Search</button>
+        <div id="btn-container"></div>
+        <div id="container"></div>
+    </main>
+
     <script src="./assets/js/logic.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 </body>
+
 </html>
