@@ -4,6 +4,8 @@ const containerEl = document.getElementById('container');
 const btnContainerEl = document.getElementById('btn-container');
 const storedCities = JSON.parse(localStorage.getItem('cities')) || [];
 
+init();
+
 // main function to retrieve our data from the weather api, render data to page, and store in localStorage
 function getSearchData(cityResult) {
   let city = cityResult
@@ -34,7 +36,7 @@ function renderCurrentWeather(city, weather) {
   const temp = weather.list[0].main.temp;
   const humid = weather.list[0].main.humidity;
   const wind = weather.list[0].wind.speed;
-  const date = dayjs().format('D/MM/YYYY')
+  const date = dayjs().format('MM/D/YYYY')
 
   // create elements to render values to
   const cityEl = document.createElement('h2')
@@ -48,12 +50,13 @@ function renderCurrentWeather(city, weather) {
   cityEl.textContent = city;
   dateEl.textContent = `(${date})`;
   iconEl.setAttribute('src', iconUrl)
-  tempEl.textContent = temp;
-  humidEl.textContent = humid;
-  windEl.textContent = wind;
+  tempEl.textContent = 'Temp: ' + temp;
+  humidEl.textContent = 'Humidity: ' + humid;
+  windEl.textContent = 'Wind: ' + wind;
   
   // append elements to the page
-  containerEl.append(cityEl, dateEl, iconEl, tempEl, humidEl, windEl);
+  containerEl.innerHTML = '';
+  containerEl.append(cityEl, dateEl, iconEl, tempEl, windEl, humidEl);
 
 }
 
@@ -66,15 +69,16 @@ function storeSearchHistory(city) {
 
 function createHistoryBtn() {
   const thisCity = JSON.parse(localStorage.getItem('cities'))
-
-  for (let i = 0; i < thisCity.length; i++) {
-
-    const newBtn = document.createElement('button');
-    newBtn.classList.add('history-btn');
-    newBtn.textContent = thisCity[i];
-    btnContainerEl.append(newBtn);
-  }
-    
+  if (thisCity) {
+    btnContainerEl.innerHTML = '';
+      for (let i = 0; i < thisCity.length; i++) {
+          const newBtn = document.createElement('button');
+          newBtn.classList.add('history-btn');
+          newBtn.textContent = thisCity[i];
+          btnContainerEl.append(newBtn);
+        }
+    }
+        
 }
 
 function handleSearchHistory(event) {
@@ -87,18 +91,21 @@ function handleSearchHistory(event) {
 
 }
 
-function createForecastCards() {
+// function createForecastCards() {
 
-}
+// }
 
 // functions and event listeners to initialize on page load
-createHistoryBtn();
-
-searchBtn.addEventListener('click', () => {
-  let searchInput = document.getElementById('search-input').value;
-  if (searchInput) {
-    getSearchData(searchInput)
-  }
-});
-
-btnContainerEl.addEventListener('click', handleSearchHistory);
+function init() { 
+    
+    createHistoryBtn();
+    
+    searchBtn.addEventListener('click', () => {
+        let searchInput = document.getElementById('search-input').value;
+        if (searchInput) {
+            getSearchData(searchInput)
+        }
+    });
+    
+    btnContainerEl.addEventListener('click', handleSearchHistory);
+}
